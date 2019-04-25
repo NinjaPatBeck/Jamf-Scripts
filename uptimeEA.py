@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 
 '''
 This script is designed as a Jamf Extension Attribute
