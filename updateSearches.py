@@ -10,7 +10,6 @@ import requests
 import getpass
 import base64
 import json
-import csv
 
 #prompt user for JSS creds, encoode, and build the headers
 url = 'your.jss.url.goes.here'
