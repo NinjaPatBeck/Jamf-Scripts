@@ -1,13 +1,19 @@
 #!/usr/bin/python3
 
+'''
+This script is designed to update all Advanced Computer searches
+that use "Operating System" as a display field (wonky results)
+and making them use "Operating System Version" instead
+'''
+
 import requests
 import getpass
 import base64
 import json
 import csv
 
-#prompt user for JSS creds, encoode, and build the header
-url = 'https://jss.corp.thumbtack.com'
+#prompt user for JSS creds, encoode, and build the headers
+url = 'your.jss.url.goes.here'
 print("Please enter your username:")
 username = input()
 password = getpass.getpass()
@@ -17,6 +23,7 @@ encodedString = encodedString[2:-1]
 json_headers = {'authorization':"Basic {e}".format(e=encodedString), 'Accept':'application/json'}
 xml_headers = {'authorization':"Basic {e}".format(e=encodedString), 'content-type':'application/xml'}
 
+#build a list of all advanced search IDs
 def getSearchIDs():
     idList = []
     response = requests.get((url + "/JSSResource/advancedcomputersearches"), headers=json_headers)
@@ -25,6 +32,7 @@ def getSearchIDs():
         idList.append(search['id'])
     return idList
 
+#cut down the list of all search IDs to a list of searches that need to be updated
 def getSearchesToUpdate():
 	idList = getSearchIDs()
 	idsToUpdateList = []
@@ -45,6 +53,7 @@ def getSearchesToUpdate():
 			print('Search #{id} is not even displaying OS info, dude'.format(id=id))
 	return idsToUpdateList
 
+#do the actual updating
 def updateSearches():
 	idsToUpdateList = getSearchesToUpdate()
 	#GET the XML for each search that needs to be updated
